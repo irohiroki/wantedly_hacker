@@ -1,5 +1,8 @@
 require 'capybara'
+require 'dotenv'
 require 'selenium-webdriver'
+
+Dotenv.load
 
 class WantedlyAuto
   def initialize(session, url)
@@ -20,7 +23,7 @@ class WantedlyAuto
   end
 
   def login
-    err 'ID/パスワードを設定してください' unless ENV['EMAIL'] && ENV['PASSWORD']
+    err '.env.sampleを参考に.envファイルを作り、メールアドレス/パスワードを記入してください。' unless ENV['EMAIL'] && ENV['PASSWORD']
 
     @session.click_on 'ログイン'
     @session.click_on 'Facebookでログイン'
@@ -52,9 +55,6 @@ class WantedlyAuto
     $stdin.gets 
   end
 end
-
-ENV['EMAIL'] = 'irohiroki+fb@gmail.com'
-ENV['PASSWORD'] = 'Tele41335998'
 
 session = Capybara::Session.new(:selenium)
 
