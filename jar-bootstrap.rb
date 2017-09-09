@@ -46,14 +46,12 @@ class WantedlyHacker
   end
 
   def login
-    try { @session.click_on 'ログイン' }
-      .check('ログインダイアログを表示') {
-        @session.has_link?(href: 'https://www.wantedly.com/user/auth/facebook')
-      }
-    try { @session.find('a[href="https://www.wantedly.com/user/auth/facebook"]').click }
-      .check('Facebookのログイン画面を表示') {
-        @session.has_field?('email')
-      }
+    @session.click_on 'ログイン'
+    @session.has_link?(href: 'https://www.wantedly.com/user/auth/facebook') or
+      ask_manual('ログインダイアログを表示')
+    @session.find('a[href="https://www.wantedly.com/user/auth/facebook"]').click
+    @session.has_field?('email') or
+      ask_manual('Facebookのログイン画面を表示')
     @session.fill_in 'email', with: ENV['EMAIL']
     @session.fill_in 'pass', with: ENV['PASSWORD']
     @session.click_on 'loginbutton'
@@ -86,32 +84,6 @@ class WantedlyHacker
     open_session
     @urls.each do |url|
       process(url)
-    end
-  end
-
-  def try(&block)
-    Action.new(block).try_twice
-  end
-
-  class Action
-    def initialize(block)
-      @action_block = block
-    end
-
-    def check(descripton, &block)
-      @descripton = descripton
-      @check_block = block
-      self.retry unless @check_block.call
-    end
-
-    def try_twice
-      @action_block.call
-      self
-    end
-
-    def retry
-      @action_block.call
-      @check_block.call or ask_manual(@descripton)
     end
   end
 end
