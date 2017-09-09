@@ -9,7 +9,7 @@ def ask_manual(descripton)
   $stdin.gets 
 end
 
-class WantedlyAuto
+class WantedlyHacker
   def self.run
     new.run
   end
@@ -116,4 +116,4 @@ class WantedlyAuto
   end
 end
 
-WantedlyAuto.run
+WantedlyHacker.run
