@@ -22,12 +22,12 @@ class WantedlyHacker
 
   def cheer
     @session.find('.column-main .label', text: '応援する').click
-    @session.has_css?('.sns-checkbox-wrapper input[type="checkbox"]') or
+    @session.has_css?('.ProjectSupportModal--checkboxWrapper') or
       ask_manual('応援ウィンドウを表示')
-    @session.all('.sns-checkbox-wrapper input[type="checkbox"]').each{|checkbox| checkbox.set(false) }
-    @session.all('.sns-checkbox-wrapper input[type="checkbox"]').none?(&:checked?) or
+    @session.all('.ProjectSupportModal--checkboxWrapper input[type="checkbox"]').each{|checkbox| checkbox.set(false) }
+    @session.all('.ProjectSupportModal--checkboxWrapper input[type="checkbox"]').none?(&:checked?) or
       ask_manual('SNSオプションをアンチェック')
-    @session.find('.ngdialog-content button', text: '応援する').click
+    @session.find('button', text: '応援する').click
   end
 
   def cheer_printing(url)
@@ -47,9 +47,9 @@ class WantedlyHacker
 
   def login
     @session.click_on 'ログイン'
-    @session.has_link?(href: 'https://www.wantedly.com/user/auth/facebook') or
+    @session.has_link?(text: 'Facebook') or
       ask_manual('ログインダイアログを表示')
-    @session.find('a[href="https://www.wantedly.com/user/auth/facebook"]').click
+    @session.click_on 'Facebook'
     @session.has_field?('email') or
       ask_manual('Facebookのログイン画面を表示')
     @session.fill_in 'email', with: ENV['EMAIL']
