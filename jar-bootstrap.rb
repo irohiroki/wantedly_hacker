@@ -22,12 +22,9 @@ class WantedlyHacker
 
   def cheer
     @session.find('.column-main .label', text: '応援する').click
-    @session.has_css?('.ProjectSupportModal--checkboxWrapper') or
+    @session.has_css?('.ProjectSupportModalB--submitButton') or
       ask_manual('応援ウィンドウを表示')
-    @session.all('.ProjectSupportModal--checkboxWrapper input[type="checkbox"]').each{|checkbox| checkbox.set(false) }
-    @session.all('.ProjectSupportModal--checkboxWrapper input[type="checkbox"]').none?(&:checked?) or
-      ask_manual('SNSオプションをアンチェック')
-    @session.find('button', text: '応援する').click
+    @session.find('.ProjectSupportModalB--submitButton', text: '完了').click
   end
 
   def cheer_printing(url)
